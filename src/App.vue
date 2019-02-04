@@ -44,6 +44,24 @@
         }
       },
       update_clues() {
+        function check_down(rows, r, c) {
+          while(r > 0) {
+            if(rows[r][c].number) return false;
+            if(rows[r][c].black) break; // ?
+            r--;
+          }
+          return true;
+        }
+        function check_across(rows, r, c) {
+          
+          while(c >= 0) {
+            if(rows[r][c].number) return false;
+            if(rows[r][c].black) break; // ?
+            c--;
+          }
+          return true;
+        }
+
         var acrosses = [];
         var downs = [];
         for(var i = 0; i < this.rows.length; i++) {
@@ -52,13 +70,13 @@
               // have to check all the way up, not just the square above
               if(i == 0) {
                 downs.push(this.rows[i][j].number);
-              } else if(i > 0 && !this.rows[i - 1][j].number) {
+              } else if(i > 0 && check_down(this.rows, i - 1, j)) {
                 downs.push(this.rows[i][j].number);
               }
               // ditto -- have to check all the way left.
               if(j == 0) {
                 acrosses.push(this.rows[i][j].number);
-              } else if(j > 0 && !this.rows[i][j - 1].number) {
+              } else if(j > 0 && check_across(this.rows, i, j - 1)) {
                 acrosses.push(this.rows[i][j].number);
               }
             }
